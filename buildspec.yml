@@ -9,6 +9,7 @@ phases:
       - bash scripts/install_gitcrypt.sh
   pre_build:
     commands:
+      - bash scripts/decrypt.sh
       - bash scripts/install_dependencies.sh
       - bash scripts/init_terraform.sh
   build:
