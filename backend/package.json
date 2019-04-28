@@ -8,7 +8,7 @@
     "package": "sls package",
     "deploy": "sls deploy",
     "migrate:make": "knex migrate:make",
-    "migrate": "knex migrate:latest",
+    "migrate": "sls invoke local --function migrate",
     "lint": "eslint 'src/**/*.ts'",
     "compile": "tsc --noEmit"
   },
@@ -17,6 +17,7 @@
     "@types/dotenv": "^6.1.1",
     "@typescript-eslint/eslint-plugin": "^1.7.0",
     "@typescript-eslint/parser": "^1.7.0",
+    "copy-webpack-plugin": "^5.0.3",
     "eslint": "^5.16.0",
     "eslint-config-prettier": "^4.2.0",
     "eslint-plugin-prettier": "^3.0.1",

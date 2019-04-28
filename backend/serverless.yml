@@ -28,13 +28,22 @@ provider:
     subnetIds: ${file(../infra/outputs.json):public_subnet_ids.value}
 
 functions:
+  migrate:
+    handler: src/handlers/migrate.handler
+    timeout: 60
+    environment:
+      DB_HOST: ${env:DB_HOST, file(../infra/outputs.json):rds_host.value}
+      DB_USER: ${env:DB_USER, file(../infra/outputs.json):rds_user.value}
+      DB_PASS: ${env:DB_PASS, file(../secrets/dev.json):db_pass}
+      DB_NAME: "${env:DB_NAME, 'pressbutton'}"
+      DB_PORT: "${env:DB_PORT, '5432'}"
   trigger:
     handler: src/handlers/trigger.handler
     timeout: 30
     environment:
-      DB_HOST: ${file(../infra/outputs.json):rds_host.value, env:DB_HOST}
-      DB_USER: ${file(../infra/outputs.json):rds_user.value, env:DB_USER}
-      DB_PASS: ${file(../secrets/dev.json):db_pass, env:DB_PASS}
+      DB_HOST: ${env:DB_HOST, file(../infra/outputs.json):rds_host.value}
+      DB_USER: ${env:DB_USER, file(../infra/outputs.json):rds_user.value}
+      DB_PASS: ${env:DB_PASS, file(../secrets/dev.json):db_pass}
       DB_NAME: "${env:DB_NAME, 'pressbutton'}"
       DB_PORT: "${env:DB_PORT, '5432'}"
     events:

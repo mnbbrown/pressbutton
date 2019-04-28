@@ -10,6 +10,15 @@ steps:
       - "infra/outputs.json"
       - "infra/terraform.tfstate"
   - wait:
+  - id: "migrate"
+    label: ":rocket: migrate to sls"
+    commands:
+      - buildkite-agent artifact download 'infra/outputs.json' infra/ --step 'apply terraform'
+      - bash scripts/decrypt.sh
+      - bash scripts/migrate.sh
+    concurrency: 1
+    concurrency_group: "migrate"
+  - wait:
   - id: "deploy"
     label: ":rocket: deploy to sls"
     commands:
