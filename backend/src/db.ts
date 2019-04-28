@@ -1,7 +1,7 @@
 import knex from "knex";
 import { DB_HOST, DB_USER, DB_PASS, DB_NAME, DB_PORT } from "./config";
 
-const config = {
+export const config = {
   client: "postgresql",
   connection: {
     host: DB_HOST || "127.0.0.1",
