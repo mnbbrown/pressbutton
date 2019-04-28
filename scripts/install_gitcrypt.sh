@@ -17,5 +17,5 @@ make install
 popd
 
 which git-crypt
-rm git-crypt-${VERSION}
+rm -rf git-crypt-${VERSION}
 
