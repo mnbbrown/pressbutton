@@ -1,11 +1,9 @@
 steps:
-  - label: ":rocket: install tools"
-    commands:
-      - apt-get update -y
-      - apt-get install -y apt-transport-https curl
-      - sh scripts/install_yarn.sh
-      - sh scripts/install_terraform.sh
-      - bash scripts/install_gitcrypt.sh
   - label: ":lock: decrypt secrets"
     command: bash scripts/decrypt.sh
+  - label: "install dependencies"
+    command: bash scripts/install_dependencies.sh
+  - label: "init terraform"
+    command: bash scripts/init_terraform.sh
+  - wait:
 
