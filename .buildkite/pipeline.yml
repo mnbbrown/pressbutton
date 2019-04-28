@@ -6,4 +6,9 @@ steps:
   - label: "init terraform"
     command: bash scripts/init_terraform.sh
   - wait:
+  - label: "apply terraform"
+    command: bash scripts/apply_terraform.sh
+    artifact_paths:
+      - "infra/outputs.json"
+      - "infra/terraform.tfstate"
 
