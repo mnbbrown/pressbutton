@@ -4,12 +4,12 @@ phases:
     commands:
       - apt-get update -y
       - apt-get install -y apt-transport-https curl
-      - scripts/install_yarn.sh
-      - scripts/install_terraform.sh
+      - sh scripts/install_yarn.sh
+      - sh scripts/install_terraform.sh
   pre_build:
     commands:
       - yarn --frozen-lockfile
-      - scripts/init_terraform.sh
+      - sh scripts/init_terraform.sh
   build:
     commands:
       - cd infra && terraform plan && cd ../
