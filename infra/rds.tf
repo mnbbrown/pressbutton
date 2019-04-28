@@ -17,7 +17,7 @@ resource "aws_db_instance" "project" {
   instance_class       = "db.t2.micro"
   name                 = "${var.project}${var.environment}"
   username             = "root"
-  password = "${trimspace(file("../secrets/${var.environment}/rds_password.txt"))}"
+  password = "${var.db_pass}"
   db_subnet_group_name = "${aws_db_subnet_group.private.name}"
   publicly_accessible = false
 

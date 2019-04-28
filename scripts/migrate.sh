@@ -2,6 +2,7 @@
 
 set -e
 
-pushd infra
-terraform init
+pushd backend
+yarn migrate
 popd
+

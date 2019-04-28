@@ -3,5 +3,5 @@
 set -e
 
 pushd infra
-terraform init
+terraform plan
 popd
