@@ -15,5 +15,6 @@ phases:
       - scripts/init_terraform.sh
   build:
     commands:
+      - cd infra && terraform plan && cd ../
       - yarn migrate
       - yarn deploy
