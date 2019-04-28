@@ -1,0 +1,43 @@
+{
+  "name": "aws-nodejs-typescript",
+  "version": "1.0.0",
+  "description": "Serverless webpack example using Typescript",
+  "main": "handler.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "package": "sls package",
+    "deploy": "sls deploy",
+    "migrate:make": "knex migrate:make",
+    "migrate": "knex migrate:latest",
+    "lint": "eslint 'src/**/*.ts'",
+    "compile": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "8.10.24",
+    "@types/dotenv": "^6.1.1",
+    "@typescript-eslint/eslint-plugin": "^1.7.0",
+    "@typescript-eslint/parser": "^1.7.0",
+    "eslint": "^5.16.0",
+    "eslint-config-prettier": "^4.2.0",
+    "eslint-plugin-prettier": "^3.0.1",
+    "prettier": "^1.17.0",
+    "serverless": "^1.41.1",
+    "serverless-dotenv-plugin": "^2.0.1",
+    "serverless-offline": "^4.9.4",
+    "serverless-webpack": "^5.2.0",
+    "ts-loader": "^5.4.4",
+    "typescript": "^3.4.5",
+    "webpack": "^4.30.0",
+    "webpack-node-externals": "^1.7.2"
+  },
+  "author": "The serverless webpack authors (https://github.com/elastic-coders/serverless-webpack)",
+  "license": "MIT",
+  "dependencies": {
+    "aws-sdk": "^2.444.0",
+    "axios": "^0.18.0",
+    "dotenv": "^7.0.0",
+    "knex": "^0.16.5",
+    "middy": "^0.25.1",
+    "pg": "^7.10.0"
+  }
+}

@@ -1,0 +1,26 @@
+{
+    "lambda_security_group": {
+        "sensitive": false,
+        "type": "string",
+        "value": "sg-06f775711566beede"
+    },
+    "private_subnet_id": {
+        "sensitive": false,
+        "type": "string",
+        "value": "subnet-0d07943a3ca5f3715"
+    },
+    "public_subnet_ids": {
+        "sensitive": false,
+        "type": "list",
+        "value": [
+            "subnet-0bdd3a59758215a48",
+            "subnet-01a715865aefe076e",
+            "subnet-03e95d7c2b67be3af"
+        ]
+    },
+    "vpc_id": {
+        "sensitive": false,
+        "type": "string",
+        "value": "vpc-0dec4ae3b75c8812c"
+    }
+}
