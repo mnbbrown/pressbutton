@@ -7,6 +7,7 @@ steps:
   - label: "apply terraform"
     command: bash scripts/apply_terraform.sh
     concurrency: 1
+    concurrency_group: "terraform"
     artifact_paths:
       - "infra/outputs.json"
       - "infra/terraform.tfstate"
