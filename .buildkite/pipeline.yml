@@ -11,4 +11,10 @@ steps:
     artifact_paths:
       - "infra/outputs.json"
       - "infra/terraform.tfstate"
-
+  - wait:
+  - label: ":rocket: deploy to sls"
+    command: bash scripts/deploy_sls.sh
+    concurrency: 1
+    concurrency_group: "deploy"
+    artifact_paths:
+      - "backend/.serverless/**/*"
