@@ -9,7 +9,7 @@ phases:
   pre_build:
     commands:
       - yarn --frozen-lockfile
-      - sh scripts/init_terraform.sh
+      - bash scripts/init_terraform.sh
   build:
     commands:
       - cd infra && terraform plan && cd ../
