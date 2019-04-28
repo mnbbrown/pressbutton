@@ -2,7 +2,7 @@
 
 deploy:
 	terraform apply
-	export
+	make export
 
 export:
-	terraform output --json > ../backend/infrastructure.json
+	terraform output --json > ../infrastructure.json

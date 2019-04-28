@@ -11,3 +11,4 @@ jspm_packages
 yarn-error.log
 NOTES.md
 .terraform
+backend/infrastructure.json

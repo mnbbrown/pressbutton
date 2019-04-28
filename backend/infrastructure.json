@@ -6,17 +6,31 @@
     },
     "private_subnet_id": {
         "sensitive": false,
-        "type": "string",
-        "value": "subnet-0d07943a3ca5f3715"
+        "type": "list",
+        "value": [
+            "subnet-0d07943a3ca5f3715",
+            "subnet-0b1f1624629555711",
+            "subnet-025c7da77736e2705"
+        ]
     },
     "public_subnet_ids": {
         "sensitive": false,
         "type": "list",
         "value": [
             "subnet-0bdd3a59758215a48",
-            "subnet-01a715865aefe076e",
-            "subnet-03e95d7c2b67be3af"
+            "subnet-01c14d471078e9f52",
+            "subnet-074fe9357ae5bc6f6"
         ]
+    },
+    "rds_host": {
+        "sensitive": false,
+        "type": "string",
+        "value": "terraform-20190428120106099000000001.cbolb6hmexmz.eu-west-2.rds.amazonaws.com"
+    },
+    "rds_user": {
+        "sensitive": false,
+        "type": "string",
+        "value": "root"
     },
     "vpc_id": {
         "sensitive": false,

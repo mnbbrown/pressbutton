@@ -13,6 +13,7 @@ resource "aws_security_group" "lambdas" {
   tags {
     Name = "${var.project}-lambdas-security-group"
     Project = "${var.project}"
+    Environment = "${var.environment}"
   }
 }
 
@@ -32,9 +33,17 @@ resource "aws_security_group" "rds" {
     cidr_blocks     = ["0.0.0.0/0"]
   }
 
+  ingress {
+    from_port = 5432
+    to_port = 5432
+    protocol = "tcp"
+    security_groups = ["${aws_security_group.lambdas.id}"]
+  }
+
   tags {
     Name = "${var.project}-rds-security-group"
     Project = "${var.project}"
+    Environment = "${var.environment}"
   }
 
 }

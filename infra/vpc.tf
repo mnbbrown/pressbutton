@@ -4,6 +4,7 @@ resource "aws_vpc" "project" {
   tags {
     Name = "${var.project}-vpc"
     Project = "${var.project}"
+    Environment = "${var.environment}"
   }
 }
 
@@ -14,6 +15,7 @@ resource "aws_internet_gateway" "public" {
   tags {
     Name = "${var.project}-public-internet-gateway"
     Project = "${var.project}"
+    Environment = "${var.environment}"
   }
 }
 
@@ -23,6 +25,7 @@ resource "aws_route_table" "public" {
   tags {
     Name = "${var.project}-public-route-table"
     Project = "${var.project}"
+    Environment = "${var.environment}"
   }
 }
 
@@ -36,11 +39,12 @@ resource "aws_subnet" "public" {
   count = "${length(var.azs)}"
   cidr_block = "${element(concat(var.public_subnet_cidrs, list("")), count.index)}"
   vpc_id = "${aws_vpc.project.id}"
-  availability_zone = "eu-west-2a"
+  availability_zone = "${element(var.azs, count.index)}"
 
   tags {
     Name = "${format("%s-%s-public-subnet", var.project, element(var.azs, count.index))}"
     Project = "${var.project}"
+    Environment = "${var.environment}"
   }
 }
 
@@ -57,12 +61,14 @@ resource "aws_route_table" "private" {
   tags {
     Name = "${var.project}-private-route-table"
     Project = "${var.project}"
+    Environment = "${var.environment}"
   }
 }
 
 resource "aws_route_table_association" "private" {
+  count = "${length(var.azs)}"
   route_table_id = "${aws_route_table.private.id}"
-  subnet_id = "${aws_subnet.private.id}"
+  subnet_id = "${element(aws_subnet.private.*.id, count.index)}"
 }
 
 resource "aws_route" "nat_gateway" {
@@ -72,15 +78,18 @@ resource "aws_route" "nat_gateway" {
 }
 
 resource "aws_subnet" "private" {
-  cidr_block = "${var.private_subnet_cidr}"
+  count = "${length(var.azs)}"
+  cidr_block = "${element(concat(var.private_subnet_cidrs, list("")), count.index)}"
   vpc_id = "${aws_vpc.project.id}"
-  availability_zone = "eu-west-2a"
+  availability_zone = "${element(var.azs, count.index)}"
 
   tags {
-    Name = "${var.project}-eu-west-2a-private-subnet"
+    Name = "${format("%s-%s-private-subnet", var.project, element(var.azs, count.index))}"
     Project = "${var.project}"
+    Environment = "${var.environment}"
   }
 }
+
 
 ## Nat gateway
 resource "aws_eip" "nat_eip" {
@@ -88,16 +97,18 @@ resource "aws_eip" "nat_eip" {
   tags {
     Name = "${var.project}-nat-eip"
     Project = "${var.project}"
+    Environment = "${var.environment}"
   }
 }
 
 resource "aws_nat_gateway" "private" {
   allocation_id = "${aws_eip.nat_eip.id}"
-  subnet_id = "${aws_subnet.private.id}"
+  subnet_id = "${aws_subnet.private.0.id}"
 
   tags {
     Name = "${var.project}-private-nat-gateway"
     Project = "${var.project}"
+    Environment = "${var.environment}"
   }
 }
 
@@ -108,7 +119,7 @@ output "vpc_id" {
 }
 
 output "private_subnet_id" {
-  value = "${aws_subnet.private.id}"
+  value = "${aws_subnet.private.*.id}"
 }
 
 output "public_subnet_ids" {
