@@ -3,11 +3,10 @@ steps:
     command: bash scripts/decrypt.sh
   - label: "install dependencies"
     command: bash scripts/install_dependencies.sh
-  - label: "init terraform"
-    command: bash scripts/init_terraform.sh
   - wait:
   - label: "apply terraform"
     command: bash scripts/apply_terraform.sh
+    concurrency: 1
     artifact_paths:
       - "infra/outputs.json"
       - "infra/terraform.tfstate"
