@@ -1,19 +1,20 @@
 steps:
-  - label: ":lock: decrypt secrets"
-    command: bash scripts/decrypt.sh
-  - label: "install dependencies"
-    command: bash scripts/install_dependencies.sh
-  - wait:
-  - label: "apply terraform"
-    command: bash scripts/apply_terraform.sh
+  - id: "terraform"
+    label: "apply terraform"
+    commands:
+      - bash scripts/decrypt.sh
+      - bash scripts/apply_terraform.sh
     concurrency: 1
     concurrency_group: "terraform"
     artifact_paths:
       - "infra/outputs.json"
       - "infra/terraform.tfstate"
   - wait:
-  - label: ":rocket: deploy to sls"
-    command: bash scripts/deploy_sls.sh
+  - id: "deploy"
+    label: ":rocket: deploy to sls"
+    commands:
+      - bash scripts/decrypt.sh
+      - bash scripts/deploy_sls.sh
     concurrency: 1
     concurrency_group: "deploy"
     artifact_paths:
