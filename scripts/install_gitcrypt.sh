@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -ev
+
 VERSION=0.6.0
 apt-get install -y libssl-dev
 wget https://www.agwa.name/projects/git-crypt/downloads/git-crypt-${VERSION}.tar.gz.asc
@@ -14,5 +16,6 @@ make
 make install
 popd
 
+which git-crypt
 rm git-crypt-${VERSION}
 

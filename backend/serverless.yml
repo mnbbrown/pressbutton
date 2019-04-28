@@ -24,16 +24,16 @@ provider:
   region: eu-west-2
   vpc:
     securityGroupIds:
-      - ${file(../infrastructure.json):lambda_security_group.value}
-    subnetIds: ${file(../infrastructure.json):public_subnet_ids.value}
+      - ${file(../infra/outputs.json):lambda_security_group.value}
+    subnetIds: ${file(../infra/outputs.json):public_subnet_ids.value}
 
 functions:
   trigger:
     handler: src/handlers/trigger.handler
     timeout: 30
     environment:
-      DB_HOST: ${file(../infrastructure.json):rds_host.value, env:DB_HOST}
-      DB_USER: ${file(../infrastructure.json):rds_user.value, env:DB_USER}
+      DB_HOST: ${file(../infra/outputs.json):rds_host.value, env:DB_HOST}
+      DB_USER: ${file(../infra/outputs.json):rds_user.value, env:DB_USER}
       DB_PASS: ${file(../secrets/dev.json):db_pass, env:DB_PASS}
       DB_NAME: "${env:DB_NAME, 'pressbutton'}"
       DB_PORT: "${env:DB_PORT, '5432'}"

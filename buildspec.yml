@@ -9,9 +9,9 @@ phases:
       - bash scripts/install_gitcrypt.sh
   pre_build:
     commands:
-      - yarn --frozen-lockfile
+      - bash scripts/install_dependencies.sh
       - bash scripts/init_terraform.sh
   build:
     commands:
       - bash scripts/apply_terraform.sh
-      - yarn deploy
+      - bash scripts/deploy_sls.sh
