@@ -9,7 +9,6 @@ steps:
     commands:
       - bash scripts/runin.sh backend yarn install
       - bash scripts/runin.sh backend yarn compile
-  - block: ":rocket: release to dev"
   - id: "terraform"
     label: "apply terraform"
     commands:
@@ -45,5 +44,5 @@ steps:
     label: "run latency check"
     command: bash backend/scripts/latency.sh
     artifact_paths:
-      - "backend/latency.png"
+      - "latency.png"
 
