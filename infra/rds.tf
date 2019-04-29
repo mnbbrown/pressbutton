@@ -20,6 +20,7 @@ resource "aws_db_instance" "project" {
   password = "${var.db_pass}"
   db_subnet_group_name = "${aws_db_subnet_group.private.name}"
   publicly_accessible = false
+  vpc_security_group_ids = ["${aws_security_group.rds.id}"]
 
   tags {
     Name = "${var.project}-${var.environment}-rds"
