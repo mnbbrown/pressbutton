@@ -40,3 +40,10 @@ steps:
     concurrency_group: "deploy"
     artifact_paths:
       - "backend/.serverless/**/*"
+  - wait:
+  - id: "latency_check"
+    label: "run latency check"
+    command: bash backend/scripts/latency.sh
+    artifact_paths:
+      - "backend/latency.png"
+

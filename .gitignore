@@ -12,3 +12,4 @@ yarn-error.log
 NOTES.md
 .terraform
 infra/outputs.json
+backend/latency.png
