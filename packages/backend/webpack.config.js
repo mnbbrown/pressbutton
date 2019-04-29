@@ -1,7 +1,9 @@
 const path = require("path");
 const nodeExternals = require("webpack-node-externals");
 const slsw = require("serverless-webpack");
-const CopyPlugin = require('copy-webpack-plugin');
+const CopyPlugin = require("copy-webpack-plugin");
+
+console.log(nodeExternals());
 
 module.exports = {
   entry: slsw.lib.entries,
@@ -14,13 +16,13 @@ module.exports = {
     path: path.join(__dirname, ".webpack"),
     filename: "[name].js"
   },
-  externals: [nodeExternals()],
-  target: "node",
-  plugins: [
-    new CopyPlugin([
-      { from: 'migrations', to: 'migrations' }
-    ])
+  externals: [
+    nodeExternals({
+      modulesDir: path.resolve(__dirname, "../../node_modules")
+    })
   ],
+  target: "node",
+  plugins: [new CopyPlugin([{ from: "migrations", to: "migrations" }])],
   module: {
     rules: [
       {
