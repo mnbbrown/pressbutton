@@ -2,13 +2,13 @@ steps:
   - id: "lint"
     label: "lint"
     commands:
-      - bash scripts/runin.sh backend yarn install
-      - bash scripts/runin.sh backend yarn lint
+      - yarn install --frozen-lockfile
+      - yarn workspaces run lint
   - id: "compile"
     label: "compile"
     commands:
-      - bash scripts/runin.sh backend yarn install
-      - bash scripts/runin.sh backend yarn compile
+      - yarn install --frozen-lockfile
+      - yarn workspaces run compile
   - id: "terraform"
     label: "apply terraform"
     commands:
@@ -25,24 +25,37 @@ steps:
     commands:
       - buildkite-agent artifact download 'infra/outputs.json' infra/ --step 'apply terraform'
       - bash scripts/decrypt.sh
-      - bash scripts/migrate.sh
+      - yarn install --frozen-lockfile
+      - yarn workspaces run migrate
     concurrency: 1
     concurrency_group: "migrate"
   - wait:
-  - id: "deploy"
-    label: ":rocket: deploy to sls"
+  - id: "deploy_api"
+    label: ":rocket: deploy api to sls"
     commands:
       - buildkite-agent artifact download 'infra/outputs.json' infra/ --step 'apply terraform'
       - bash scripts/decrypt.sh
-      - bash scripts/deploy_sls.sh
+      - yarn install --frozen-lockfile
+      - yarn workspaces run deploy:backend
     concurrency: 1
-    concurrency_group: "deploy"
+    concurrency_group: "deploy_api"
     artifact_paths:
-      - "backend/.serverless/**/*"
+      - ".serverless/**/*"
+  - id: "deploy_frontend"
+    label: ":rocket: deploy frontend to sls"
+    commands:
+      - buildkite-agent artifact download 'infra/outputs.json' infra/ --step 'apply terraform'
+      - bash scripts/decrypt.sh
+      - yarn install --frozen-lockfile
+      - yarn workspaces run deploy:frontend
+    concurrency: 1
+    concurrency_group: "deploy_frontend"
+    artifact_paths:
+      - ".serverless/**/*"
   - wait:
   - id: "latency_check"
     label: "run latency check"
-    command: bash backend/scripts/latency.sh
+    command: bash scripts/latency.sh
     artifact_paths:
       - "latency.png"
 
