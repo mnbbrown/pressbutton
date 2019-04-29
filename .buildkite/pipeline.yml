@@ -43,9 +43,11 @@ steps:
       - ".serverless/**/*"
   - id: "deploy_frontend"
     label: ":rocket: deploy frontend to sls"
+    env:
+      NETLIFY_SITE_ID: "45ea8fe2-2a1f-4e3a-b039-780f3941de0d"
     commands:
       - yarn install --frozen-lockfile
-      - cd packages/frontend && yarn build && yarn deploy --site=45ea8fe2-2a1f-4e3a-b039-780f3941de0d && cd ../../
+      - cd packages/frontend && yarn build && yarn deploy && cd ../../
     concurrency: 1
     concurrency_group: "deploy_frontend"
     artifact_paths:
