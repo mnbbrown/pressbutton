@@ -26,7 +26,7 @@ steps:
       - buildkite-agent artifact download 'infra/outputs.json' infra/ --step 'apply terraform'
       - bash scripts/decrypt.sh
       - yarn install --frozen-lockfile
-      - yarn workspaces run migrate
+      - cd packages/backend && yarn migrate && cd ../../
     concurrency: 1
     concurrency_group: "migrate"
   - wait:
@@ -36,7 +36,7 @@ steps:
       - buildkite-agent artifact download 'infra/outputs.json' infra/ --step 'apply terraform'
       - bash scripts/decrypt.sh
       - yarn install --frozen-lockfile
-      - yarn workspaces run deploy:backend
+      - cd packages/backend && yarn deploy && cd ../../
     concurrency: 1
     concurrency_group: "deploy_api"
     artifact_paths:
@@ -47,7 +47,7 @@ steps:
       - buildkite-agent artifact download 'infra/outputs.json' infra/ --step 'apply terraform'
       - bash scripts/decrypt.sh
       - yarn install --frozen-lockfile
-      - yarn workspaces run deploy:frontend
+      - cd packages/backend && yarn build && yarn deploy && cd ../../
     concurrency: 1
     concurrency_group: "deploy_frontend"
     artifact_paths:

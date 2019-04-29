@@ -14,7 +14,7 @@
     "eject": "react-scripts eject",
     "lint": "eslint 'src/**/*.ts' 'src/**/*.tsx'",
     "compile": "tsc -b",
-    "deploy:frontend": "netlify deploy --prod --dir=build"
+    "deploy": "netlify deploy --prod --dir=build"
   },
   "eslintConfig": {
     "extends": "react-app"
