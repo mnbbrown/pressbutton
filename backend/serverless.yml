@@ -37,6 +37,18 @@ functions:
       DB_PASS: ${env:DB_PASS, file(../secrets/dev.json):db_pass}
       DB_NAME: "${env:DB_NAME, 'pressbutton'}"
       DB_PORT: "${env:DB_PORT, '5432'}"
+  status:
+    handler: src/handlers/status.handler
+    environment:
+      DB_HOST: ${env:DB_HOST, file(../infra/outputs.json):rds_host.value}
+      DB_USER: ${env:DB_USER, file(../infra/outputs.json):rds_user.value}
+      DB_PASS: ${env:DB_PASS, file(../secrets/dev.json):db_pass}
+      DB_NAME: "${env:DB_NAME, 'pressbutton'}"
+      DB_PORT: "${env:DB_PORT, '5432'}"
+    events:
+      - http:
+          method: GET
+          path: status
   trigger:
     handler: src/handlers/trigger.handler
     timeout: 30
@@ -46,7 +58,6 @@ functions:
       DB_PASS: ${env:DB_PASS, file(../secrets/dev.json):db_pass}
       DB_NAME: "${env:DB_NAME, 'pressbutton'}"
       DB_PORT: "${env:DB_PORT, '5432'}"
-      DEBUG: "knex:*"
     events:
       - http:
           method: POST

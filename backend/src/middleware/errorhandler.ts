@@ -16,6 +16,7 @@ export const errorHandler: Middleware<void> = () => {
           next();
           return;
         }
+        console.error(handler.error.stack || handler.error);
         handler.response = respond(
           {
             message: "Internal Server Error",

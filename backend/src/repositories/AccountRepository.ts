@@ -7,6 +7,7 @@ export interface IAccountRecord {
 
 export interface IAccountRepository {
   getByUsername(username: string): Promise<IAccountRecord | undefined>;
+  count(): Promise<number>;
 }
 
 export class AccountRepository implements IAccountRepository {
@@ -20,5 +21,12 @@ export class AccountRepository implements IAccountRepository {
       })
       .limit(1)
       .first();
+  }
+
+  public async count(): Promise<number> {
+    const result = await db("accounts")
+      .count("*")
+      .first();
+    return result.count;
   }
 }

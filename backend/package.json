@@ -7,6 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "package": "sls package",
     "deploy": "sls deploy",
+    "start": "sls offline",
     "migrate:make": "knex migrate:make",
     "migrate": "sls invoke local --function migrate",
     "lint": "eslint 'src/**/*.ts'",
