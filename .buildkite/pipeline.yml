@@ -45,7 +45,7 @@ steps:
     label: ":rocket: deploy frontend to sls"
     commands:
       - yarn install --frozen-lockfile
-      - cd packages/frontend && yarn build && yarn deploy && cd ../../
+      - cd packages/frontend && yarn build && yarn deploy --site=45ea8fe2-2a1f-4e3a-b039-780f3941de0d && cd ../../
     concurrency: 1
     concurrency_group: "deploy_frontend"
     artifact_paths:
