@@ -46,6 +46,7 @@ functions:
       DB_PASS: ${env:DB_PASS, file(../secrets/dev.json):db_pass}
       DB_NAME: "${env:DB_NAME, 'pressbutton'}"
       DB_PORT: "${env:DB_PORT, '5432'}"
+      DEBUG: "knex:*"
     events:
       - http:
           method: POST
