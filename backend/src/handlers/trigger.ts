@@ -1,4 +1,4 @@
-import { APIGatewayEvent, Handler } from "aws-lambda";
+import { Context, APIGatewayEvent, Handler } from "aws-lambda";
 import { respond, HttpError } from "../utils/http";
 import { middleware } from "../middleware";
 import { TriggerRepository } from "../repositories/TriggerRepository";
@@ -37,7 +37,11 @@ const handleNext = async (
   }
 };
 
-export const trigger: Handler = async (event: APIGatewayEvent) => {
+export const trigger: Handler = async (
+  event: APIGatewayEvent,
+  ctx: Context
+) => {
+  ctx.callbackWaitsForEmptyEventLoop = false;
   const qs = event.queryStringParameters || {};
   if (!qs.token) {
     throw new HttpError(400, "Token is required");
