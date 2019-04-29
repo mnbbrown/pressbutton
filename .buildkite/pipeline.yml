@@ -44,10 +44,8 @@ steps:
   - id: "deploy_frontend"
     label: ":rocket: deploy frontend to sls"
     commands:
-      - buildkite-agent artifact download 'infra/outputs.json' infra/ --step 'apply terraform'
-      - bash scripts/decrypt.sh
       - yarn install --frozen-lockfile
-      - cd packages/backend && yarn build && yarn deploy && cd ../../
+      - cd packages/frontend && yarn build && yarn deploy && cd ../../
     concurrency: 1
     concurrency_group: "deploy_frontend"
     artifact_paths:
