@@ -22,6 +22,12 @@ provider:
   name: aws
   runtime: nodejs6.10
   region: eu-west-2
+  environment:
+    DB_HOST: ${env:DB_HOST, file(../../infra/outputs.json):rds_host.value}
+    DB_USER: ${env:DB_USER, file(../../infra/outputs.json):rds_user.value}
+    DB_PASS: ${env:DB_PASS, file(../../secrets/dev.json):db_pass}
+    DB_NAME: "${env:DB_NAME, 'pressbutton'}"
+    DB_PORT: "${env:DB_PORT, '5432'}"
   vpc:
     securityGroupIds:
       - ${file(../../infra/outputs.json):lambda_security_group.value}
@@ -30,34 +36,28 @@ provider:
 functions:
   migrate:
     handler: src/handlers/migrate.handler
-    timeout: 60
-    environment:
-      DB_HOST: ${env:DB_HOST, file(../../infra/outputs.json):rds_host.value}
-      DB_USER: ${env:DB_USER, file(../../infra/outputs.json):rds_user.value}
-      DB_PASS: ${env:DB_PASS, file(../../secrets/dev.json):db_pass}
-      DB_NAME: "${env:DB_NAME, 'pressbutton'}"
-      DB_PORT: "${env:DB_PORT, '5432'}"
-  status:
-    handler: src/handlers/status.handler
-    environment:
-      DB_HOST: ${env:DB_HOST, file(../../infra/outputs.json):rds_host.value}
-      DB_USER: ${env:DB_USER, file(../../infra/outputs.json):rds_user.value}
-      DB_PASS: ${env:DB_PASS, file(../../secrets/dev.json):db_pass}
-      DB_NAME: "${env:DB_NAME, 'pressbutton'}"
-      DB_PORT: "${env:DB_PORT, '5432'}"
+  getProfile:
+    handler: src/handlers/profile.getProfileByUsername
     events:
       - http:
+          cors: true
+          method: GET
+          path: profiles/{username}
+          authorizer:
+            arn: ${env.COGNITO_AUTHORIZER, file(../../infra/outputs.json):cognito_arn.value}
+          request:
+            parameters:
+              paths:
+                username: true
+  status:
+    handler: src/handlers/status.handler
+    events:
+      - http:
+          cors: true
           method: GET
           path: status
   trigger:
     handler: src/handlers/trigger.handler
-    timeout: 30
-    environment:
-      DB_HOST: ${env:DB_HOST, file(../../infra/outputs.json):rds_host.value}
-      DB_USER: ${env:DB_USER, file(../../infra/outputs.json):rds_user.value}
-      DB_PASS: ${env:DB_PASS, file(../../secrets/dev.json):db_pass}
-      DB_NAME: "${env:DB_NAME, 'pressbutton'}"
-      DB_PORT: "${env:DB_PORT, '5432'}"
     events:
       - http:
           method: POST
