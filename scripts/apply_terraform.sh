@@ -3,10 +3,10 @@
 set -e
 
 VAR_FILE="$(pwd)/secrets/${ENVIRONMENT:-dev}.json"
-echo $VAR_FILE
+TF_IN_AUTOMATION=true
 
 pushd infra
 terraform init
-terraform apply -var-file="${VAR_FILE}"
+terraform apply -var-file="${VAR_FILE}" -input=false -auto-approve
 terraform output --json > outputs.json
 popd
