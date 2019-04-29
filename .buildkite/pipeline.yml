@@ -1,19 +1,13 @@
 steps:
-  - id: "install"
-    label: "install deps"
-    command: bash scripts/runin.sh backend yarn install --frozen-lockfile
-    artifact_paths:
-      - "backend/node_modules/**"
-  - wait:
   - id: "lint"
     label: "lint"
     commands:
-      - buildkite-agent artifact download 'backend/node_modules' backend/ --step 'install deps'
+      - bash scripts/runin.sh backend yarn install
       - bash scripts/runin.sh backend yarn lint
   - id: "compile"
     label: "compile"
     commands:
-      - buildkite-agent artifact download 'backend/node_modules' backend/ --step 'install deps'
+      - bash scripts/runin.sh backend yarn install
       - bash scripts/runin.sh backend yarn compile
   - block: ":rocket: release to dev"
   - id: "terraform"
