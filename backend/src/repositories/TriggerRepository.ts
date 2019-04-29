@@ -1,11 +1,12 @@
 import { db } from "../db";
+import { DestinationConfigs } from "../destinations";
 
 interface ITrigger {
   id: string;
   token: string;
   accountId: string;
   next: string;
-  config: any;
+  config: DestinationConfigs;
 }
 
 export interface ITriggerRepository {

@@ -3,7 +3,7 @@ import { SES } from "aws-sdk";
 
 type TAddresses = string | string[];
 
-interface IEmailDestinationConfig {
+export interface IEmailDestinationConfig {
   to: TAddresses;
   cc?: TAddresses;
   bcc?: TAddresses;

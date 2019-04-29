@@ -10,6 +10,7 @@ module.exports =  {
     sourceType:  'module',  // Allows for the use of imports
   },
   rules: {
-    "@typescript-eslint/interface-name-prefix": false
+    "@typescript-eslint/interface-name-prefix": false,
+    "@typescript-eslint/no-parameter-properties": false
   }
 };

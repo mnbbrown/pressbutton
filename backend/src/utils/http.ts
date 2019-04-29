@@ -14,10 +14,10 @@ export const respond = (body?: object, statusCode?: number) => {
 };
 
 export class HttpError extends Error {
-  constructor(
+  public constructor(
     public statusCode: number,
     public message: string,
-    public context?: any
+    public context?: object
   ) {
     super(message);
     Object.setPrototypeOf(this, HttpError.prototype);

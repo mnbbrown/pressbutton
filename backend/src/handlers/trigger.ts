@@ -2,8 +2,12 @@ import { APIGatewayEvent, Handler } from "aws-lambda";
 import { respond, HttpError } from "../utils/http";
 import { middleware } from "../middleware";
 import { TriggerRepository } from "../repositories/TriggerRepository";
-import { EmailDestination } from "../destinations/EmailDestination";
-import { WebhookDestination } from "../destinations/webhook";
+import {
+  EmailDestination,
+  IEmailDestinationConfig
+} from "../destinations/EmailDestination";
+import { WebhookDestination, IWebhookConfig } from "../destinations/webhook";
+import { DestinationConfigs } from "../destinations";
 
 const triggerRepository = new TriggerRepository();
 
@@ -16,13 +20,16 @@ enum IDestinationsEnum {
   Webhook = "webhook"
 }
 
-const handleNext = async (next: string, config: any): Promise<void> => {
+const handleNext = async (
+  next: string,
+  config: DestinationConfigs
+): Promise<void> => {
   switch (next) {
     case IDestinationsEnum.Email: {
-      return emailDestination.execute(config);
+      return emailDestination.execute(config as IEmailDestinationConfig);
     }
     case IDestinationsEnum.Webhook: {
-      return webhookDestination.execute(config);
+      return webhookDestination.execute(config as IWebhookConfig);
     }
     default: {
       console.log("Unknown");

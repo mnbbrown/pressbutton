@@ -1,7 +1,7 @@
 import axios from "axios";
 import { IDestination } from ".";
 
-interface IWebhookConfig {
+export interface IWebhookConfig {
   url: string;
   method: "GET" | "POST";
   body: object;
