@@ -3,7 +3,7 @@ steps:
     label: "install deps"
     command: bash scripts/runin.sh backend yarn install --frozen-lockfile
     artifact_paths:
-      - "backend/node_modules"
+      - "backend/node_modules/**"
   - wait:
   - id: "lint"
     label: "lint"
