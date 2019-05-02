@@ -47,7 +47,6 @@ export class EmailDestination implements IDestination<IEmailDestinationConfig> {
   }
 
   public async execute(config: IEmailDestinationConfig): Promise<void> {
-    console.log(config.to, config.body);
-    //
+    return this.send(config);
   }
 }

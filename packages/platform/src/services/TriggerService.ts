@@ -1,15 +1,20 @@
 import { ITriggerRepository } from "../repositories/TriggerRepository";
 import { WebhookDestination } from "../destinations/webhook";
-import { EmailDestination } from "../destinations/EmailDestination";
-import { IDestinationsEnum, IDestination } from "../destinations";
+import {
+  IDestinationsEnum,
+  IDestination,
+  DestinationConfigs
+} from "../destinations";
 import { HttpError } from "../utils/http";
 
 export class TriggerService {
-  private destinations: Record<IDestinationsEnum, IDestination<any>>;
+  private destinations: Record<
+    IDestinationsEnum,
+    IDestination<DestinationConfigs>
+  >;
   constructor(private repository: ITriggerRepository) {
     this.destinations = {
-      [IDestinationsEnum.Webhook]: new WebhookDestination(),
-      [IDestinationsEnum.Email]: new EmailDestination()
+      [IDestinationsEnum.Webhook]: new WebhookDestination()
     };
   }
   public async invoke(token: string): Promise<void> {
