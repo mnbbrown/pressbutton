@@ -12,7 +12,7 @@ export class TriggerService {
     IDestinationsEnum,
     IDestination<DestinationConfigs>
   >;
-  constructor(private repository: ITriggerRepository) {
+  public constructor(private repository: ITriggerRepository) {
     this.destinations = {
       [IDestinationsEnum.Webhook]: new WebhookDestination()
     };
