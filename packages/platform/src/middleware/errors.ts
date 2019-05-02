@@ -3,7 +3,7 @@ import { HttpError } from "../utils/http";
 
 export const error: HandlerFn = async (
   _: Request,
-  res: Response,
+  res: Response<{ message: string; stack?: string }>,
   next: NextFn
 ) => {
   try {

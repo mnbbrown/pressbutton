@@ -7,12 +7,13 @@ import { rds } from "./src/infrastructure/rds";
 import { frontendClient, pool } from "./src/infrastructure/cognito";
 import { createLambda } from "./src/infrastructure/lambdas";
 import { routes as profileRoutes } from "./src/routes/profile";
+import { routes as triggerRoutes } from "./src/routes/trigger";
 import { getStatus } from "./src/routes/status";
 import { toLambdaPath, toLambda } from "./src/adapters/toLambda";
 import { convertContext, createRoute } from "./src/infrastructure/api";
 import { factory } from "./src/db";
 
-const routes = [...profileRoutes, getStatus].map(route => {
+const routes = [...profileRoutes, ...triggerRoutes, getStatus].map(route => {
   const lambda = createLambda(route.name, () => {
     const config = {
       db: factory({

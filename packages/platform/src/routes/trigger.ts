@@ -1,58 +1,42 @@
-import { Context, APIGatewayEvent, Handler } from "aws-lambda";
-import { respond, HttpError } from "../utils/http";
-import { middleware } from "../middleware";
+import { TriggerService } from "../services/TriggerService";
+import { Route, HandlerFn } from "../adapters";
+import { error } from "../middleware/errors";
 import { TriggerRepository } from "../repositories/TriggerRepository";
-import {
-  EmailDestination,
-  IEmailDestinationConfig
-} from "../destinations/EmailDestination";
-import { WebhookDestination, IWebhookConfig } from "../destinations/webhook";
-import { DestinationConfigs } from "../destinations";
+import { Config } from "../config";
 
-const triggerRepository = new TriggerRepository();
-
-// Destinations
-const emailDestination = new EmailDestination();
-const webhookDestination = new WebhookDestination();
-
-enum IDestinationsEnum {
-  Email = "email",
-  Webhook = "webhook"
-}
-
-const handleNext = async (
-  next: string,
-  config: DestinationConfigs
-): Promise<void> => {
-  switch (next) {
-    case IDestinationsEnum.Email: {
-      return emailDestination.execute(config as IEmailDestinationConfig);
-    }
-    case IDestinationsEnum.Webhook: {
-      return webhookDestination.execute(config as IWebhookConfig);
-    }
-    default: {
-      console.log("Unknown");
-    }
-  }
+const getService = (config: Config): TriggerService => {
+  const { db } = config;
+  const repository = new TriggerRepository(db);
+  return new TriggerService(repository);
 };
 
-export const trigger: Handler = async (
-  event: APIGatewayEvent,
-  ctx: Context
-) => {
-  ctx.callbackWaitsForEmptyEventLoop = false;
-  const qs = event.queryStringParameters || {};
-  if (!qs.token) {
-    throw new HttpError(400, "Token is required");
-  }
-  const trigger = await triggerRepository.getByToken(qs.token);
-  if (!trigger) {
-    throw new HttpError(404, "Token is invalid");
-  }
-  const { next, config } = trigger;
-  await handleNext(next, config);
-  return respond();
+const handler = (config: Config): HandlerFn[] => {
+  const service = getService(config);
+  return [
+    error,
+    async (req, res) => {
+      const { token } = req.query;
+      await service.invoke(token);
+      res.send({
+        body: undefined,
+        statusCode: 204
+      });
+    }
+  ];
 };
 
-export const handler = middleware(trigger);
+const getTrigger: Route<Config, {}, {}> = {
+  name: "getTrigger",
+  path: "trigger",
+  method: "GET",
+  handler
+};
+
+const postTrigger: Route<Config, {}, {}> = {
+  name: "postTrigger",
+  path: "trigger",
+  method: "POST",
+  handler
+};
+
+export const routes: Route<Config>[] = [getTrigger, postTrigger];

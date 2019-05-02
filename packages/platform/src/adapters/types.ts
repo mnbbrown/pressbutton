@@ -19,12 +19,12 @@ export interface Request<T = any> {
   query: { [key: string]: string };
 }
 
-export interface HttpResponse<T> {
+export interface HttpResponse<T = undefined> {
   body: T;
   headers?: { [key: string]: string };
   statusCode?: number;
 }
 
-export interface Response<T = any> {
+export interface Response<T = undefined> {
   send(response: HttpResponse<T>): void;
 }
