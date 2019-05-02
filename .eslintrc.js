@@ -12,6 +12,7 @@ module.exports = {
   rules: {
     "@typescript-eslint/interface-name-prefix": false,
     "@typescript-eslint/no-parameter-properties": false,
-    "@typescript-eslint/explicit-function-return-type": false
+    "@typescript-eslint/explicit-function-return-type": false,
+    "@typescript-eslint/no-explicit-any": false
   }
 };

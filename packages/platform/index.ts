@@ -64,14 +64,11 @@ const apiDomainName = new aws.apigateway.DomainName(name("api-domain-name"), {
       : `${environment}-api.pushbutton.dev`
 });
 
-api.stage.stageName.apply(
-  stageName =>
-    new aws.apigateway.BasePathMapping(name("base-path-mapping"), {
-      restApi: api.restAPI,
-      domainName: apiDomainName.domainName,
-      stageName: stageName
-    })
-);
+new aws.apigateway.BasePathMapping(name("base-path-mapping"), {
+  restApi: api.restAPI,
+  domainName: apiDomainName.domainName,
+  stageName: api.stage.stageName
+});
 
 new aws.route53.Record(name("api-domain-name"), {
   aliases: [

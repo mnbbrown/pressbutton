@@ -3,7 +3,7 @@ import * as aws from "@pulumi/aws";
 import { vpc, privateSubnets } from "./vpc";
 import { securityGroup as bastionSecurityGroup } from "./bastion";
 import { securityGroup as lambdaSecurityGroup, createLambda } from "./lambdas";
-import { db_pass } from "../../../../secrets/dev.json";
+import { db_pass } from "../../../../secrets/dev.json"; // eslint-disable-line @typescript-eslint/camelcase
 import { factory, ensureDB } from "../db";
 
 const privateSubnetGroup = new aws.rds.SubnetGroup(
@@ -48,7 +48,7 @@ export const rds = new aws.rds.Instance(name("rds"), {
   instanceClass: "db.t2.micro",
   name: name("rds").replace(/-/g, ""),
   username: "root",
-  password: db_pass,
+  password: db_pass, // eslint-disable-line @typescript-eslint/camelcase
   publiclyAccessible: false,
   storageType: "gp2",
   tags: tags("rds"),

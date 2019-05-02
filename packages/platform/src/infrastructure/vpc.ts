@@ -49,7 +49,7 @@ const privateRouteTable = new aws.ec2.RouteTable(name("private-route-table"), {
   vpcId: vpc.id
 });
 
-const natGatewayRoute = new aws.ec2.Route(name("nat-gateway"), {
+new aws.ec2.Route(name("nat-gateway"), {
   destinationCidrBlock: "0.0.0.0/0",
   natGatewayId: natGateway.id,
   routeTableId: privateRouteTable.id
@@ -71,14 +71,11 @@ const publicRouteTable = new aws.ec2.RouteTable(name("public-route-table"), {
   vpcId: vpc.id
 });
 
-const publicInternetGatewayRoute = new aws.ec2.Route(
-  name("public-internet-gateway"),
-  {
-    destinationCidrBlock: "0.0.0.0/0",
-    gatewayId: publicInternetGateway.id,
-    routeTableId: publicRouteTable.id
-  }
-);
+new aws.ec2.Route(name("public-internet-gateway"), {
+  destinationCidrBlock: "0.0.0.0/0",
+  gatewayId: publicInternetGateway.id,
+  routeTableId: publicRouteTable.id
+});
 
 export const publicSubnets: aws.ec2.Subnet[] = azs.map(
   (az, i) =>

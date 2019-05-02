@@ -9,6 +9,7 @@ steps:
     commands:
       - yarn install --frozen-lockfile
       - yarn workspaces run compile
+  - wait:
   - id: "deploy_api"
     label: ":rocket: deploy platform"
     commands:
