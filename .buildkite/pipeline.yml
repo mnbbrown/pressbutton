@@ -14,6 +14,7 @@ steps:
     commands:
       - bash scripts/decrypt.sh
       - yarn install --frozen-lockfile
+      - pulumi login
       - cd packages/platform && yarn deploy && cd ../../
     concurrency: 1
     concurrency_group: "deploy_api"
