@@ -4,7 +4,7 @@ import * as aws from "@pulumi/aws";
 import { environment } from "./src/infrastructure/variables";
 import { name } from "./src/infrastructure/utils";
 import { rds } from "./src/infrastructure/rds";
-import { pool } from "./src/infrastructure/cognito";
+import { frontendClient, pool } from "./src/infrastructure/cognito";
 import { createLambda } from "./src/infrastructure/lambdas";
 import { routes as profileRoutes } from "./src/routes/profile";
 import { getStatus } from "./src/routes/status";
@@ -85,5 +85,5 @@ new aws.route53.Record(name("api-domain-name"), {
 });
 
 export const API_ENDPOINT = apiDomainName.domainName;
-export const COGNITO_POOL_ARN = pool.arn;
-export const COGNITO_POOL_ENDPOINT = pool.endpoint;
+export const COGNITO_POOL_ID = pool.id;
+export const COGNITO_POOL_CLIENT_ID = frontendClient.id;
