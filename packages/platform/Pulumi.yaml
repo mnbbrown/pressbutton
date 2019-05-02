@@ -1,0 +1,3 @@
+name: pushbutton-platform
+runtime: nodejs
+description: A minimal TypeScript Pulumi program

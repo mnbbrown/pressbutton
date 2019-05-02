@@ -9,38 +9,14 @@ steps:
     commands:
       - yarn install --frozen-lockfile
       - yarn workspaces run compile
-  - id: "terraform"
-    label: "apply terraform"
-    commands:
-      - bash scripts/decrypt.sh
-      - bash scripts/apply_terraform.sh
-    concurrency: 1
-    concurrency_group: "terraform"
-    artifact_paths:
-      - "infra/outputs.json"
-      - "infra/terraform.tfstate"
-  - wait:
-  - id: "migrate"
-    label: ":rocket: migrate to sls"
-    commands:
-      - buildkite-agent artifact download 'infra/outputs.json' infra/ --step 'apply terraform'
-      - bash scripts/decrypt.sh
-      - yarn install --frozen-lockfile
-      - cd packages/backend && yarn migrate && cd ../../
-    concurrency: 1
-    concurrency_group: "migrate"
-  - wait:
   - id: "deploy_api"
-    label: ":rocket: deploy api to sls"
+    label: ":rocket: deploy platform"
     commands:
-      - buildkite-agent artifact download 'infra/outputs.json' infra/ --step 'apply terraform'
       - bash scripts/decrypt.sh
       - yarn install --frozen-lockfile
-      - cd packages/backend && yarn deploy && cd ../../
+      - cd packages/platform && yarn deploy && cd ../../
     concurrency: 1
     concurrency_group: "deploy_api"
-    artifact_paths:
-      - ".serverless/**/*"
   - id: "deploy_frontend"
     label: ":rocket: deploy frontend to sls"
     env:

@@ -1,14 +1,11 @@
-export const respond = (body?: object, statusCode?: number) => {
+export const respond = <T = any>(body?: T, statusCode?: number) => {
   if (!body) {
     return {
       statusCode: statusCode || 204
     };
   }
   return {
-    body: JSON.stringify(body),
-    headers: {
-      "Content-Type": "application/json"
-    },
+    body,
     statusCode
   };
 };

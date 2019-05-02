@@ -1,0 +1,33 @@
+{
+  "version": "0.0.1",
+  "private": "true",
+  "workspaces": {
+    "nohoist": ["**", "**/**"]
+  },
+  "name": "@pressbutton/platform",
+  "scripts": {
+    "deploy": "pulumi up --refresh -y",
+    "lint": "eslint 'src/**/*.ts' '*.ts'",
+    "preview": "pulumi preview",
+    "compile": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@pulumi/aws": "^0.18.3",
+    "@pulumi/pulumi": "latest",
+    "@types/dotenv": "^6.1.1",
+    "@types/knex": "^0.16.1",
+    "@types/node": "latest",
+    "@types/pg": "^7.4.14",
+    "@types/pg-escape": "^0.2.0",
+    "@pulumi/awsx": "^0.18.3",
+    "@types/express": "^4.16.1",
+    "jest": "^24.7.1",
+    "ts-node": "^8.1.0"
+  },
+  "dependencies": {
+    "express": "^4.16.4",
+    "knex": "^0.16.5",
+    "pg": "^7.10.0",
+    "pg-escape": "^0.2.0"
+  }
+}

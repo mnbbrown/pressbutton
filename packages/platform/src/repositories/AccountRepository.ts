@@ -1,5 +1,4 @@
-import { db } from "../db";
-
+import * as Knex from "knex";
 export interface IAccountRecord {
   username: string;
   id: number;
@@ -11,10 +10,12 @@ export interface IAccountRepository {
 }
 
 export class AccountRepository implements IAccountRepository {
+  public constructor(private db: Knex) {}
+
   public async getByUsername(
     username: string
   ): Promise<IAccountRecord | undefined> {
-    return db("accounts")
+    return this.db("accounts")
       .select("id", "username")
       .where({
         username
@@ -24,7 +25,7 @@ export class AccountRepository implements IAccountRepository {
   }
 
   public async count(): Promise<number> {
-    const result = await db("accounts")
+    const result = await this.db("accounts")
       .count("*")
       .first();
     return result.count;
