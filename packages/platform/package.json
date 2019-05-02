@@ -6,7 +6,7 @@
   },
   "name": "@pressbutton/platform",
   "scripts": {
-    "deploy": "pulumi up --refresh -y",
+    "deploy": "pulumi up --refresh -y --skip-preview",
     "lint": "eslint 'src/**/*.ts' '*.ts'",
     "preview": "pulumi preview",
     "compile": "tsc --noEmit"

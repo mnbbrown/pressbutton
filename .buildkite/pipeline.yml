@@ -5,7 +5,7 @@ steps:
       - yarn install --frozen-lockfile
       - yarn workspaces run lint
   - id: "compile"
-    label: "compile"
+    label: ":compression: compile"
     commands:
       - yarn install --frozen-lockfile
       - yarn workspaces run compile
@@ -15,24 +15,23 @@ steps:
     commands:
       - bash scripts/decrypt.sh
       - yarn install --frozen-lockfile
-      - pulumi login
-      - cd packages/platform && pulumi stack select mnbbrown/pushbutton/dev && yarn deploy && cd ../../
+      - ./scripts/deploy_platform.sh
     concurrency: 1
     concurrency_group: "deploy_api"
   - id: "deploy_frontend"
-    label: ":rocket: deploy frontend to sls"
+    label: ":rocket: deploy frontend to netlify"
     env:
       NETLIFY_SITE_ID: "45ea8fe2-2a1f-4e3a-b039-780f3941de0d"
     commands:
       - yarn install --frozen-lockfile
-      - cd packages/frontend && yarn build && yarn deploy && cd ../../
+      - ./scripts/deploy_frontend.sh
     concurrency: 1
     concurrency_group: "deploy_frontend"
     artifact_paths:
       - ".serverless/**/*"
   - wait:
   - id: "latency_check"
-    label: "run latency check"
+    label: ":timer_clock: run latency check"
     command: bash scripts/latency.sh
     artifact_paths:
       - "latency.png"
