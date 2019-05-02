@@ -8,9 +8,6 @@ for s in $(echo $values | jq -r "to_entries|map(\"REACT_APP_\(.key)=\(.value|tos
 done
 popd
 
-env
-exit
-
 pushd packages/frontend
 yarn build
 yarn deploy
