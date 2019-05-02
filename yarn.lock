@@ -1492,7 +1492,7 @@
     "@pulumi/pulumi" "^v0.17.0"
     semver "^5.4.0"
 
-"@pulumi/pulumi@^0.17.6", "@pulumi/pulumi@^0.17.8", "@pulumi/pulumi@^v0.17.0", "@pulumi/pulumi@latest":
+"@pulumi/pulumi@^0.17.6", "@pulumi/pulumi@^0.17.8", "@pulumi/pulumi@^0.17.9", "@pulumi/pulumi@^v0.17.0":
   version "0.17.9"
   resolved "https://registry.yarnpkg.com/@pulumi/pulumi/-/pulumi-0.17.9.tgz#e09aa2cc9e9024ff1bd4fd815cbd31120d5c06a1"
   integrity sha512-k7HKNrp1fI0MzrGWJc44T1XhZge0UslOAj2OqH2P/cefIDXTWISW6rqfieONpL941/wQhvbZSE7cndTEl3aNNQ==
@@ -1767,7 +1767,7 @@
   dependencies:
     "@types/node" "*"
 
-"@types/node@*", "@types/node@latest":
+"@types/node@*":
   version "11.13.8"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-11.13.8.tgz#e5d71173c95533be9842b2c798978f095f912aab"
   integrity sha512-szA3x/3miL90ZJxUCzx9haNbK5/zmPieGraZEe4WI+3srN0eGLiT22NXeMHmyhNEopn+IrxqMc7wdVwvPl8meg==
@@ -1776,6 +1776,11 @@
   version "10.14.6"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-10.14.6.tgz#9cbfcb62c50947217f4d88d4d274cc40c22625a9"
   integrity sha512-Fvm24+u85lGmV4hT5G++aht2C5I4Z4dYlWZIh62FAfFO/TfzXtPpoLI6I7AuBWkIFqZCnhFOoTT7RjjaIL5Fjg==
+
+"@types/node@^8.10.48":
+  version "8.10.48"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-8.10.48.tgz#e385073561643a9ba6199a1985ffc03530f90781"
+  integrity sha512-c35YEBTkL4rzXY2ucpSKy+UYHjUBIIkuJbWYbsGIrKLEWU5dgJMmLkkIb3qeC3O3Tpb1ZQCwecscvJTDjDjkRw==
 
 "@types/normalize-package-data@^2.4.0":
   version "2.4.0"
