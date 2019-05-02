@@ -15,7 +15,7 @@ steps:
       - bash scripts/decrypt.sh
       - yarn install --frozen-lockfile
       - pulumi login
-      - cd packages/platform && yarn deploy && cd ../../
+      - cd packages/platform && pulumi stack select mnbbrown/pushbutton/dev && yarn deploy && cd ../../
     concurrency: 1
     concurrency_group: "deploy_api"
   - id: "deploy_frontend"
