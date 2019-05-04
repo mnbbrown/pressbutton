@@ -42,7 +42,7 @@ export class API<ContextT = {}> {
       return;
     }
     const { path, name, method, handler } = config;
-    if (path && name && method) {
+    if ((path || path === "") && name && method) {
       this.paths.add(removeParams(path));
       this.routes.push({
         path,
