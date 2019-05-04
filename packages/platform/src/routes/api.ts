@@ -77,7 +77,7 @@ const createStatusAPI = (container: Container) => {
   const api = new API<Context>();
   api.use({
     name: "status",
-    path: `/`,
+    path: "",
     method: "GET",
     handler: async event => {
       const repository = container.get<IAccountRepository>(TAccountRepository);
