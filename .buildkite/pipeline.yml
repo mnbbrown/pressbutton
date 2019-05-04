@@ -4,11 +4,15 @@ steps:
     commands:
       - yarn install --frozen-lockfile
       - yarn workspaces run lint
+    retry:
+      automatic: true
   - id: "compile"
     label: ":compression: compile"
     commands:
       - yarn install --frozen-lockfile
       - yarn workspaces run compile
+    retry:
+      automatic: true
   - wait:
   - id: "deploy_api"
     label: ":rocket: deploy platform"
@@ -18,6 +22,8 @@ steps:
       - ./scripts/deploy_platform.sh
     concurrency: 1
     concurrency_group: "deploy_api"
+    retry:
+      automatic: true
   - id: "deploy_frontend"
     label: ":rocket: deploy frontend to netlify"
     env:
@@ -27,12 +33,11 @@ steps:
       - ./scripts/deploy_frontend.sh
     concurrency: 1
     concurrency_group: "deploy_frontend"
-    artifact_paths:
-      - ".serverless/**/*"
+    retry:
+      automatic: true
   - wait:
   - id: "latency_check"
     label: ":timer_clock: run latency check"
     command: bash scripts/latency.sh
     artifact_paths:
       - "latency.png"
-
