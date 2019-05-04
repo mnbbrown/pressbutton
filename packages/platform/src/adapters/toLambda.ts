@@ -1,4 +1,5 @@
 import { Handler, APIGatewayEvent, APIGatewayProxyResult } from "aws-lambda";
+import { Context } from "./context";
 import { Request, Response, HandlerFn, HttpResponse, NextFn } from "./types";
 
 export const toLambdaPath = (path: string) => {
@@ -43,11 +44,15 @@ export const toLambda = (...handlers: HandlerFn<any, any>[]): Handler => async (
       }
     };
 
+    const ctx: Context = {
+      account: event.requestContext.identity.user
+    };
+
     let current = 0;
     const next: NextFn = async () => {
       const nextHandler = handlers[current++];
       if (nextHandler) {
-        await nextHandler(request, response, next);
+        await nextHandler(ctx, request, response, next);
       }
     };
     next();

@@ -1,11 +1,20 @@
 import {
   IAccountRepository,
-  IAccountRecord
+  IAccountRecord,
+  TAccountRepository
 } from "../repositories/AccountRepository";
 import { HttpError } from "../utils/http";
+import { inject, injectable } from "inversify";
 
-export class ProfileService {
-  public constructor(private repository: IAccountRepository) {}
+export const TProfileService = Symbol("TProfileService");
+
+export interface IProfileService {
+  getByUsername(username: string): Promise<IAccountRecord>;
+}
+
+@injectable()
+export class ProfileService implements IProfileService {
+  @inject(TAccountRepository) private repository: IAccountRepository;
   public async getByUsername(username: string): Promise<IAccountRecord> {
     const profile = await this.repository.getByUsername(username);
     if (!profile) {

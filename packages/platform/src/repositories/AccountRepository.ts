@@ -1,16 +1,22 @@
-import * as Knex from "knex";
+import Knex from "knex";
+import { DB } from "../container";
+import { injectable, inject } from "inversify";
+
 export interface IAccountRecord {
   username: string;
   id: number;
 }
+
+export const TAccountRepository = Symbol("TAccountRepository");
 
 export interface IAccountRepository {
   getByUsername(username: string): Promise<IAccountRecord | undefined>;
   count(): Promise<number>;
 }
 
+@injectable()
 export class AccountRepository implements IAccountRepository {
-  public constructor(private db: Knex) {}
+  @inject(DB) private db: Knex;
 
   public async getByUsername(
     username: string

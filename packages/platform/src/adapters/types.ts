@@ -1,13 +1,17 @@
 import { IncomingHttpHeaders } from "http";
+import { Context } from "./context";
 
 export interface NextFn {
   (): Promise<void> | void;
 }
 
-export interface HandlerFn<RequestT = any, ResponseT = any> {
-  (req: Request<RequestT>, res: Response<ResponseT>, next: NextFn): Promise<
-    void
-  > | void;
+export interface HandlerFn<RequestT = any, ResponseT = any, ContextT = any> {
+  (
+    ctx: Context<ContextT>,
+    req: Request<RequestT>,
+    res: Response<ResponseT>,
+    next: NextFn
+  ): Promise<void> | void;
 }
 
 export interface Request<T = any> {

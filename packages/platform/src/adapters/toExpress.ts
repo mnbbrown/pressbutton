@@ -1,5 +1,6 @@
 import { Request, Response, HandlerFn, HttpResponse, NextFn } from "./types";
 import * as express from "express";
+import { Context } from "./context";
 
 export const toExpress = (
   ...handlers: HandlerFn<any, any>[]
@@ -30,11 +31,13 @@ export const toExpress = (
       }
     };
 
+    const ctx: Context = {};
+
     let current = 0;
     const next: NextFn = async () => {
       const nextHandler = handlers[current++];
       if (nextHandler) {
-        await nextHandler(request, response, next);
+        await nextHandler(ctx, request, response, next);
       }
     };
     next();

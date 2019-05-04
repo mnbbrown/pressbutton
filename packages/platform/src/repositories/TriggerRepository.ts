@@ -1,5 +1,5 @@
 import { DestinationConfigs, IDestinationsEnum } from "../destinations";
-import * as Knex from "knex";
+import Knex from "knex";
 
 interface ITrigger {
   id: string;

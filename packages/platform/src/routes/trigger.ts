@@ -1,6 +1,5 @@
 import { TriggerService } from "../services/TriggerService";
 import { Route, HandlerFn } from "../adapters";
-import { error } from "../middleware/errors";
 import { TriggerRepository } from "../repositories/TriggerRepository";
 import { Config } from "../config";
 
@@ -13,8 +12,7 @@ const getService = (config: Config): TriggerService => {
 const handler = (config: Config): HandlerFn[] => {
   const service = getService(config);
   return [
-    error,
-    async (req, res) => {
+    async (_, req, res) => {
       const { token } = req.query;
       await service.invoke(token);
       res.send({

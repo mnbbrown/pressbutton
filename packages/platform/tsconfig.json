@@ -5,8 +5,10 @@
     "lib": [
       "es6"
     ],
+    "types": ["reflect-metadata"],
     "module": "commonjs",
     "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "sourceMap": true,
     "experimentalDecorators": true,
     "resolveJsonModule": true,

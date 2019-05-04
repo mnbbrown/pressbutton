@@ -4,7 +4,6 @@ import {
 } from "../repositories/AccountRepository";
 import { ProfileService } from "../services/ProfileService";
 import { Route, HandlerFn } from "../adapters";
-import { error } from "../middleware/errors";
 import { Config } from "../config";
 
 const getService = (config: Config): ProfileService => {
@@ -20,8 +19,7 @@ const getProfile: Route<Config, {}, IAccountRecord> = {
   handler: (config: Config): HandlerFn<{}, IAccountRecord>[] => {
     const service = getService(config);
     return [
-      error,
-      async (req, res) => {
+      async (_, req, res) => {
         const { username } = req.params;
         const result = await service.getByUsername(username);
         res.send({

@@ -41,8 +41,6 @@ export const factory = (params?: Partial<IDatabaseParams>) => {
     }
   };
 
-  console.log("Using config", config);
-
   return Knex(config);
 };
 
