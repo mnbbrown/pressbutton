@@ -49,8 +49,9 @@ const logging: Middleware<any> = async function({ req, res }, next) {
   await next();
   const end = process.hrtime(start);
   console.info(
-    "%s %d %ds %dms",
+    "%s %s %d %ds %dms",
     req.method,
+    req.path,
     res.status,
     end[0],
     end[1] / 1000000
