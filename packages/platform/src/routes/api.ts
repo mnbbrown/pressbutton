@@ -25,6 +25,7 @@ const errorHandler: Middleware<any> = async function({ res }, next) {
   try {
     await next();
   } catch (e) {
+    console.error(e);
     if (e instanceof HttpError) {
       res.send(
         {
