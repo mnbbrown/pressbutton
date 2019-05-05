@@ -26,7 +26,8 @@ export class API<ContextT = {}> {
       const mountedPath = join(path, route.path);
       if (this.paths.has(removeParams(mountedPath))) {
         throw new Error(
-          `path collision ${removeParams(mountedPath)} ` + [...this.paths]
+          `path collision ${removeParams(mountedPath)} ` +
+            Array.from(this.paths)
         );
       }
       this.use({

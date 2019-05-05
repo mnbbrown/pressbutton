@@ -1,5 +1,6 @@
-import { Container } from "inversify";
+import { interfaces, Container } from "inversify";
 import "reflect-metadata";
+import { makeLoggerMiddleware } from "inversify-logger-middleware";
 import {
   AccountRepository,
   TAccountRepository,
@@ -12,7 +13,8 @@ import {
 } from "../services/ProfileService";
 import { API } from "../engine";
 import Knex from "knex";
-import { factory, IDatabaseParams } from "../db";
+import { factory } from "../db";
+import { Config, TConfig } from "../config";
 import { Middleware } from "../engine/types";
 import { HttpError } from "../utils/http";
 import { DB } from "../container";
@@ -91,13 +93,16 @@ const createStatusAPI = (container: Container) => {
   return api;
 };
 
-interface Config extends IDatabaseParams {
-  random?: boolean; //
-}
-
 export const createAPI = (config?: Partial<Config>) => {
   const container = new Container();
-  container.bind<Knex>(DB).toFactory(() => factory(config));
+  const logger = makeLoggerMiddleware();
+  container.applyMiddleware(logger);
+  container.bind<Partial<Config>>(TConfig).toConstantValue(config || {});
+  container
+    .bind<Knex>(DB)
+    .toFactory((context: interfaces.Context) =>
+      factory(context.container.get<Partial<Config>>(TConfig))
+    );
   container.bind<IAccountRepository>(TAccountRepository).to(AccountRepository);
   container.bind<IProfileService>(TProfileService).to(ProfileService);
 
