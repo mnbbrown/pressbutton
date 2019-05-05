@@ -1,1 +1,1 @@
-export const DB = Symbol("DB");
+export const DB = Symbol.for("DB");

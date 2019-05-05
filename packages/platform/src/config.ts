@@ -1,6 +1,6 @@
 import { IDatabaseParams } from "./db";
 
-export const TConfig = Symbol("Config");
+export const TConfig = Symbol.for("Config");
 export interface Config extends IDatabaseParams {
   random?: boolean; //
 }

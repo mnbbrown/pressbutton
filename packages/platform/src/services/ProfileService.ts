@@ -6,7 +6,7 @@ import {
 import { HttpError } from "../utils/http";
 import { inject, injectable } from "inversify";
 
-export const TProfileService = Symbol("TProfileService");
+export const TProfileService = Symbol.for("TProfileService");
 
 export interface IProfileService {
   getByUsername(username: string): Promise<IAccountRecord>;

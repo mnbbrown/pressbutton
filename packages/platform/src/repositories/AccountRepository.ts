@@ -7,7 +7,7 @@ export interface IAccountRecord {
   id: number;
 }
 
-export const TAccountRepository = Symbol("TAccountRepository");
+export const TAccountRepository = Symbol.for("TAccountRepository");
 
 export interface IAccountRepository {
   getByUsername(username: string): Promise<IAccountRecord | undefined>;
