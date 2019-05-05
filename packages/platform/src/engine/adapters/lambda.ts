@@ -38,6 +38,7 @@ export const toLambdaHandler = (route: Route<any>): APIGatewayProxyHandler => {
           headers[name] = Array.isArray(value) ? value.join(" ") : value;
         },
         send: (body, statusCode) => {
+          response.status = statusCode;
           resolve({
             statusCode: statusCode || 200,
             headers,
