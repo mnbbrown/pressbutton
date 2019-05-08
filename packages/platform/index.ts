@@ -6,26 +6,20 @@ import { name } from "./src/infrastructure/utils";
 import { rds } from "./src/infrastructure/rds";
 import { frontendClient, pool } from "./src/infrastructure/cognito";
 import { createLambda } from "./src/infrastructure/lambdas";
-import { convertContext, createRoute } from "./src/infrastructure/api";
+import { createRoute } from "./src/infrastructure/api";
 import { routes } from "./src/routes/api";
-import { toLambdaPath, toLambdaHandler } from "./src/engine/adapters/lambda";
+import { toLambdaPath } from "./src/engine/adapters/lambda";
 
 const apiRoutes = routes.map(route => {
-  const lambda = createLambda(
-    route.name,
-    () => {
-      return convertContext(toLambdaHandler(route));
-    },
-    {
-      environment: {
-        variables: {
-          DB_USER: pulumi.interpolate`${rds.username}`,
-          DB_PASS: pulumi.interpolate`${rds.password}`,
-          DB_HOST: pulumi.interpolate`${rds.address}`
-        }
+  const lambda = createLambda(route.name, "src/handlers/api.handler", {
+    environment: {
+      variables: {
+        DB_USER: pulumi.interpolate`${rds.username}`,
+        DB_PASS: pulumi.interpolate`${rds.password}`,
+        DB_HOST: pulumi.interpolate`${rds.address}`
       }
     }
-  );
+  });
   return createRoute(
     toLambdaPath(route.path),
     route.method as awsx.apigateway.Method,

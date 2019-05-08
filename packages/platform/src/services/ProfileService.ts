@@ -4,7 +4,9 @@ import {
   TAccountRepository
 } from "../repositories/AccountRepository";
 import { HttpError } from "../utils/http";
-import { inject, injectable } from "inversify";
+import { inject, injectable, LazyServiceIdentifer } from "inversify";
+
+console.log(TAccountRepository);
 
 export const TProfileService = "TProfileService";
 
@@ -14,7 +16,7 @@ export interface IProfileService {
 
 @injectable()
 export class ProfileService implements IProfileService {
-  @inject(TAccountRepository) private repository: IAccountRepository;
+  @inject(new LazyServiceIdentifer(() => TAccountRepository)) private repository: IAccountRepository;
   public async getByUsername(username: string): Promise<IAccountRecord> {
     const profile = await this.repository.getByUsername(username);
     if (!profile) {

@@ -3,9 +3,9 @@ import { join } from "path";
 import { compose } from "./compose";
 
 interface RouteConfig<ContextT> {
-  path?: string;
-  name?: string;
-  method?: string;
+  path: string;
+  name: string;
+  method: string;
   handler: Middleware<ContextT>;
 }
 
@@ -52,7 +52,7 @@ export class API<ContextT = {}> {
         handler: compose([...this.middleware, handler])
       });
     } else {
-      this.middleware.push(handler);
+      throw new Error("Incorrect route config");
     }
   }
 }

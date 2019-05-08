@@ -1,5 +1,6 @@
 module.exports = {
   parser: "@typescript-eslint/parser", // Specifies the ESLint parser
+  plugins: ["dependencies"],
   extends: [
     "plugin:@typescript-eslint/recommended", // Uses the recommended rules from the @typescript-eslint/eslint-plugin
     "prettier/@typescript-eslint", // Uses eslint-config-prettier to disable ESLint rules from @typescript-eslint/eslint-plugin that would conflict with prettier
@@ -10,6 +11,7 @@ module.exports = {
     sourceType: "module" // Allows for the use of imports
   },
   rules: {
+    "dependencies/no-cycles": 1,
     "@typescript-eslint/interface-name-prefix": false,
     "@typescript-eslint/no-parameter-properties": false,
     "@typescript-eslint/explicit-function-return-type": false,

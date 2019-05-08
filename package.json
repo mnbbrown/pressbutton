@@ -19,6 +19,7 @@
     "@typescript-eslint/parser": "^1.7.0",
     "eslint": "^5.16.0",
     "eslint-config-prettier": "^4.2.0",
+    "eslint-plugin-dependencies": "^2.4.0",
     "eslint-plugin-prettier": "^3.0.1",
     "husky": "^2.2.0",
     "lint-staged": "^8.1.5",

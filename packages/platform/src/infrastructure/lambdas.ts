@@ -1,9 +1,10 @@
 import * as aws from "@pulumi/aws";
-import * as awsx from "@pulumi/awsx";
-import { HandlerFactory } from "@pulumi/aws/serverless";
 import { name, tags } from "./utils";
 import { vpc, publicSubnets } from "./vpc";
-import { CallbackFunctionArgs } from "@pulumi/aws/lambda";
+import {
+  WebpackFunctionArgs,
+  WebpackFunction
+} from "../components/WebpackFunction";
 
 export const securityGroup = new aws.ec2.SecurityGroup(
   name("lambda-security-group"),
@@ -25,12 +26,10 @@ export const securityGroup = new aws.ec2.SecurityGroup(
 
 export const createLambda = (
   lambdaName: string,
-  handlerFactory: HandlerFactory,
-  params?: Partial<
-    CallbackFunctionArgs<awsx.apigateway.Request, awsx.apigateway.Response>
-  >
+  handler: string,
+  params?: Partial<WebpackFunctionArgs>
 ) =>
-  new aws.lambda.CallbackFunction(name(lambdaName), {
+  new WebpackFunction(name(lambdaName), {
     vpcConfig: {
       subnetIds: publicSubnets.map(subnet => subnet.id),
       securityGroupIds: [securityGroup.id]
@@ -39,6 +38,6 @@ export const createLambda = (
       aws.iam.AWSLambdaVPCAccessExecutionRole,
       aws.iam.AWSLambdaExecute
     ],
-    callbackFactory: handlerFactory,
+    handler,
     ...(params || {})
   });

@@ -1,15 +1,16 @@
 import { API } from "../engine";
 import { Middleware } from "../engine/types";
 import { HttpError } from "../utils/http";
+import { Container } from "inversify";
 import {
   TAccountRepository,
   IAccountRepository
 } from "../repositories/AccountRepository";
 import { IProfileService, TProfileService } from "../services/ProfileService";
-import { container } from "../container";
+import { createContainer } from "../container";
 
 interface Context {
-  user: any;
+  container: Container;
 }
 
 const errorHandler: Middleware<any> = async function({ res }, next) {
@@ -35,6 +36,11 @@ const errorHandler: Middleware<any> = async function({ res }, next) {
   }
 };
 
+const container: Middleware<Context> = async function({ context }, next) {
+  context.container = createContainer();
+  await next();
+};
+
 const logging: Middleware<any> = async function({ req, res }, next) {
   const start = process.hrtime();
   await next();
@@ -55,8 +61,10 @@ profileAPI.use({
   path: `/:username`,
   method: "GET",
   handler: async event => {
-    const profileService = container.get<IProfileService>(TProfileService);
-    const { res, req } = event;
+    const { res, req, context } = event;
+    const profileService = context.container.get<IProfileService>(
+      TProfileService
+    );
     const { username } = req.params;
     const result = await profileService.getByUsername(username);
     res.send(result);
@@ -69,14 +77,17 @@ statusAPI.use({
   path: "",
   method: "GET",
   handler: async event => {
-    const repository = container.get<IAccountRepository>(TAccountRepository);
-    const { res } = event;
+    const { res, context } = event;
+    const repository = context.container.get<IAccountRepository>(
+      TAccountRepository
+    );
     const count = await repository.count();
     res.send({ count });
   }
 });
 
 export const api = new API<Context>();
+api.use(container);
 api.use(logging);
 api.use(errorHandler);
 api.mount("/profiles", profileAPI);
