@@ -1,12 +1,15 @@
-var path = require("path");
-var nodeExternals = require('webpack-node-externals');
-const CircularDependencyPlugin = require('circular-dependency-plugin')
+const path = require("path");
+const nodeExternals = require("webpack-node-externals");
+const CircularDependencyPlugin = require("circular-dependency-plugin");
 
 module.exports = {
   mode: "production",
-  entry: ["./node_modules/reflect-metadata/Reflect.js", "./src/handlers/api.ts"],
+  entry: [
+    "./node_modules/reflect-metadata/Reflect.js",
+    "./src/handlers/api.ts"
+  ],
   externals: [nodeExternals()],
-  target: 'node',
+  target: "node",
   output: {
     libraryTarget: "commonjs",
     path: path.resolve(__dirname, "dist"),
@@ -35,7 +38,7 @@ module.exports = {
       // e.g. via import(/* webpackMode: "weak" */ './file.js')
       allowAsyncCycles: false,
       // set the current working directory for displaying module paths
-      cwd: process.cwd(),
+      cwd: process.cwd()
     })
   ]
 };

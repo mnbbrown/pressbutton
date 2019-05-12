@@ -13,7 +13,6 @@ import {
 import { TDB, factory } from "./db";
 import Knex from "knex";
 
-
 export const createContainer = (): Container => {
   const container = new Container();
   const logger = makeLoggerMiddleware();

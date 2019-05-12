@@ -2,7 +2,10 @@ import { name, tags } from "./utils";
 import * as aws from "@pulumi/aws";
 import { vpc, privateSubnets } from "./vpc";
 import { securityGroup as bastionSecurityGroup } from "./bastion";
-import { securityGroup as lambdaSecurityGroup, createCallbackLambda } from "./lambdas";
+import {
+  securityGroup as lambdaSecurityGroup,
+  createCallbackLambda
+} from "./lambdas";
 import { db_pass } from "../../../../secrets/dev.json"; // eslint-disable-line @typescript-eslint/camelcase
 import { factory, ensureDB } from "../db";
 

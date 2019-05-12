@@ -15,4 +15,4 @@ infra/outputs.json
 backend/latency.png
 
 ./packages/platform/dist/*.js
-
+packages/platform/dist/handler.js

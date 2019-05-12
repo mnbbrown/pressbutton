@@ -37,7 +37,8 @@ const compileFunction = async (
   const { file } = getHandlerParts(handler);
 
   codePathOptions = codePathOptions || {};
-  codePathOptions.extraExcludePackages = codePathOptions.extraExcludePackages || [];
+  codePathOptions.extraExcludePackages =
+    codePathOptions.extraExcludePackages || [];
   codePathOptions.extraExcludePackages.push("aws-sdk");
   const modulePaths = await pulumi.runtime.computeCodePaths(codePathOptions);
 
@@ -46,7 +47,10 @@ const compileFunction = async (
       {},
       webpackConfig as webpack.Configuration,
       {
-        entry: ["./node_modules/reflect-metadata/Reflect.js", path.resolve(file)]
+        entry: [
+          "./node_modules/reflect-metadata/Reflect.js",
+          path.resolve(file)
+        ]
       }
     );
     webpack(config).run((err, output) => {
@@ -54,20 +58,26 @@ const compileFunction = async (
         return reject(err);
       }
       const stats = output.toJson();
-      const assetPath = stats.publicPath || '';
       const assets = stats.assetsByChunkName;
       if (!assets) {
         return resolve();
       }
 
-      const files: pulumi.asset.AssetMap = Object.keys(assets).reduce((assetMap, assetName) => {
-        const assetFile = assets[assetName] as unknown
-        const fullPath = path.resolve(path.join(config!.output!.path! || '', assetFile as string))
-        return {
-          ...assetMap,
-          [file + '.js']: new pulumi.asset.FileAsset(fullPath as string),
-        };
-      }, {});
+      const files: pulumi.asset.AssetMap = Object.keys(assets).reduce(
+        (assetMap, assetName) => {
+          const assetFile = assets[assetName] as unknown;
+          const outputPath =
+            (config && config.output && config.output.path) || "";
+          const fullPath = path.resolve(
+            path.join(outputPath, assetFile as string)
+          );
+          return {
+            ...assetMap,
+            [file + ".js"]: new pulumi.asset.FileAsset(fullPath as string)
+          };
+        },
+        {}
+      );
       for (const [path, asset] of modulePaths) {
         files[path] = asset;
       }
@@ -79,7 +89,7 @@ const compileFunction = async (
 type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 
 export interface WebpackFunctionArgs
-extends Omit<aws.lambda.FunctionArgs, "handler" | "role" | "runtime"> {
+  extends Omit<aws.lambda.FunctionArgs, "handler" | "role" | "runtime"> {
   handler: string;
   policies?: string[];
   role?: aws.iam.Role;
@@ -116,16 +126,17 @@ export class WebpackFunction extends aws.lambda.Function {
         args.policies = [aws.iam.AWSLambdaFullAccess];
       }
 
-      policyAttachments = args.policies.map((policy) =>
-        new aws.iam.RolePolicyAttachment(
-          `${name}-${policy}-roleattachment`,
-          {
-            role: role,
-            policyArn: policy
-          },
-          opts
-        )
-      )
+      policyAttachments = args.policies.map(
+        policy =>
+          new aws.iam.RolePolicyAttachment(
+            `${name}-${policy}-roleattachment`,
+            {
+              role: role,
+              policyArn: policy
+            },
+            opts
+          )
+      );
     }
 
     const functionArgs: aws.lambda.FunctionArgs = {
@@ -135,7 +146,7 @@ export class WebpackFunction extends aws.lambda.Function {
       code: new pulumi.asset.AssetArchive(codePaths)
     };
     super(name, functionArgs, opts);
-    this.roleInstance = role
-    this.policyAttachments = policyAttachments
+    this.roleInstance = role;
+    this.policyAttachments = policyAttachments;
   }
 }

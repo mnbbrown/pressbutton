@@ -17,7 +17,6 @@ const errorHandler: Middleware<any> = async function({ res }, next) {
   try {
     await next();
   } catch (e) {
-    console.error(e);
     if (e instanceof HttpError) {
       res.send(
         {
@@ -26,6 +25,7 @@ const errorHandler: Middleware<any> = async function({ res }, next) {
         e.statusCode || 200
       );
     } else {
+      console.error(e);
       res.send(
         {
           message: "Internal Server Error"

@@ -34,7 +34,7 @@
     }
   },
   "lint-staged": {
-    "*.{js,ts}": [
+    "*.{ts}": [
       "eslint --fix",
       "git add"
     ]

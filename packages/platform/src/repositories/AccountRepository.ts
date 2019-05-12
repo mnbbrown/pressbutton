@@ -1,5 +1,5 @@
 import Knex from "knex";
-import { TDB } from '../db'
+import { TDB } from "../db";
 import { injectable, inject } from "inversify";
 
 export interface IAccountRecord {
