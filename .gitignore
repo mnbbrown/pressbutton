@@ -13,3 +13,6 @@ NOTES.md
 .terraform
 infra/outputs.json
 backend/latency.png
+
+./packages/platform/dist/*.js
+

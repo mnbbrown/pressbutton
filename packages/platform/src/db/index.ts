@@ -3,6 +3,8 @@ import * as pg from "pg";
 import escape from "pg-escape";
 import { join } from "path";
 
+export const TDB = Symbol.for("DB");
+
 export interface IDatabaseParams {
   host: string;
   port: number;

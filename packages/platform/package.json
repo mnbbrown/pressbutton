@@ -12,10 +12,13 @@
     "deploy": "pulumi up --refresh -y --skip-preview",
     "lint": "eslint 'src/**/*.ts' '*.ts'",
     "preview": "pulumi preview",
+    "ts-node": "ts-node",
     "compile": "tsc -b",
     "package": "webpack"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.4.4",
+    "@babel/plugin-proposal-decorators": "^7.4.4",
     "@babel/preset-typescript": "^7.3.3",
     "@pulumi/aws": "^0.18.3",
     "@pulumi/awsx": "^0.18.3",
@@ -29,12 +32,14 @@
     "@types/pg-escape": "^0.2.0",
     "@types/webpack": "^4.4.31",
     "babel-loader": "^8.0.5",
+    "circular-dependency-plugin": "^5.0.2",
     "dependency-tree": "^7.0.2",
     "dotenv": "^8.0.0",
     "jest": "^24.7.1",
     "ts-node": "^8.1.0",
     "webpack": "^4.30.0",
-    "webpack-cli": "^3.3.2"
+    "webpack-cli": "^3.3.2",
+    "webpack-node-externals": "^1.7.2"
   },
   "dependencies": {
     "aws-sdk": "^2.447.0",

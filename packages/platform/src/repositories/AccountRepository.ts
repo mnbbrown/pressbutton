@@ -1,5 +1,5 @@
 import Knex from "knex";
-import { DB } from "../container";
+import { TDB } from '../db'
 import { injectable, inject } from "inversify";
 
 export interface IAccountRecord {
@@ -16,7 +16,7 @@ export interface IAccountRepository {
 
 @injectable()
 export class AccountRepository implements IAccountRepository {
-  @inject(DB) private db: Knex;
+  @inject(TDB) private db: Knex;
 
   public async getByUsername(
     username: string

@@ -1,3 +1,4 @@
+import "reflect-metadata";
 import * as pulumi from "@pulumi/pulumi";
 import * as awsx from "@pulumi/awsx";
 import * as aws from "@pulumi/aws";

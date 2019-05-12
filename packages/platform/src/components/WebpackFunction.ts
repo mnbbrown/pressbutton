@@ -1,7 +1,8 @@
 import * as pulumi from "@pulumi/pulumi";
+import * as path from "path";
 import * as aws from "@pulumi/aws";
 import webpack from "webpack";
-import * as webpackConfig from "../../webpack.config";
+import webpackConfig from "../../webpack.config";
 
 interface IHandlerParts {
   file: string;
@@ -23,30 +24,54 @@ const lambdaRolePolicy = {
 };
 
 const getHandlerParts = (handler: string): IHandlerParts => {
-  const file = handler.substring(0, handler.lastIndexOf(".") + 1);
-  const entry = handler.substring(handler.lastIndexOf("/") + 1, handler.length);
+  const file = handler.substring(0, handler.lastIndexOf("."));
+  const entry = handler.substring(handler.lastIndexOf("."), handler.length);
   return { file, entry };
 };
 
 const compileFunction = async (
-  handlerInput: string
+  handlerInput: string,
+  codePathOptions: any
 ): Promise<pulumi.asset.AssetMap> => {
   const handler = await handlerInput;
   const { file } = getHandlerParts(handler);
+
+  codePathOptions = codePathOptions || {};
+  codePathOptions.extraExcludePackages = codePathOptions.extraExcludePackages || [];
+  codePathOptions.extraExcludePackages.push("aws-sdk");
+  const modulePaths = await pulumi.runtime.computeCodePaths(codePathOptions);
+
   return new Promise<pulumi.asset.AssetMap>((resolve, reject) => {
     const config: webpack.Configuration = Object.assign(
       {},
       webpackConfig as webpack.Configuration,
       {
-        entry: file
+        entry: ["./node_modules/reflect-metadata/Reflect.js", path.resolve(file)]
       }
     );
-    webpack(config).run((err, stats) => {
+    webpack(config).run((err, output) => {
       if (err) {
         return reject(err);
       }
-      console.log(stats);
-      return resolve({});
+      const stats = output.toJson();
+      const assetPath = stats.publicPath || '';
+      const assets = stats.assetsByChunkName;
+      if (!assets) {
+        return resolve();
+      }
+
+      const files: pulumi.asset.AssetMap = Object.keys(assets).reduce((assetMap, assetName) => {
+        const assetFile = assets[assetName] as unknown
+        const fullPath = path.resolve(path.join(config!.output!.path! || '', assetFile as string))
+        return {
+          ...assetMap,
+          [file + '.js']: new pulumi.asset.FileAsset(fullPath as string),
+        };
+      }, {});
+      for (const [path, asset] of modulePaths) {
+        files[path] = asset;
+      }
+      return resolve(files);
     });
   });
 };
@@ -54,22 +79,26 @@ const compileFunction = async (
 type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 
 export interface WebpackFunctionArgs
-  extends Omit<aws.lambda.FunctionArgs, "handler" | "role"> {
+extends Omit<aws.lambda.FunctionArgs, "handler" | "role" | "runtime"> {
   handler: string;
   policies?: string[];
   role?: aws.iam.Role;
+  codePathOptions: any;
 }
 
 export class WebpackFunction extends aws.lambda.Function {
+  public roleInstance?: aws.iam.Role;
+  public policyAttachments: aws.iam.RolePolicyAttachment[];
   public constructor(
     name: string,
     args: WebpackFunctionArgs,
     opts?: pulumi.CustomResourceOptions
   ) {
-    const { handler } = args;
-    const codePaths = compileFunction(handler);
+    const { handler, codePathOptions } = args;
+    const codePaths = compileFunction(handler, codePathOptions);
 
     let role: aws.iam.Role;
+    let policyAttachments: aws.iam.RolePolicyAttachment[] = [];
     if (args.role) {
       role = args.role;
     } else {
@@ -87,26 +116,26 @@ export class WebpackFunction extends aws.lambda.Function {
         args.policies = [aws.iam.AWSLambdaFullAccess];
       }
 
-      for (const policy of args.policies) {
-        // RolePolicyAttachment objects don't have a physical identity, and create/deletes are processed
-        // structurally based on the `role` and `policyArn`.  So we need to make sure our Pulumi name matches the
-        // structural identity by using a name that includes the role name and policyArn.
+      policyAttachments = args.policies.map((policy) =>
         new aws.iam.RolePolicyAttachment(
-          `${name}-${policy}`,
+          `${name}-${policy}-roleattachment`,
           {
             role: role,
             policyArn: policy
           },
           opts
-        );
-      }
+        )
+      )
     }
 
     const functionArgs: aws.lambda.FunctionArgs = {
       ...args,
       role: role.arn,
+      runtime: aws.lambda.NodeJS8d10Runtime,
       code: new pulumi.asset.AssetArchive(codePaths)
     };
     super(name, functionArgs, opts);
+    this.roleInstance = role
+    this.policyAttachments = policyAttachments
   }
 }
