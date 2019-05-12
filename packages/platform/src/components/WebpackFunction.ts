@@ -31,7 +31,7 @@ const getHandlerParts = (handler: string): IHandlerParts => {
 
 const compileFunction = async (
   handlerInput: string,
-  codePathOptions: any
+  codePathOptions?: any
 ): Promise<pulumi.asset.AssetMap> => {
   const handler = await handlerInput;
   const { file } = getHandlerParts(handler);
@@ -93,7 +93,7 @@ export interface WebpackFunctionArgs
   handler: string;
   policies?: string[];
   role?: aws.iam.Role;
-  codePathOptions: any;
+  codePathOptions?: any;
 }
 
 export class WebpackFunction extends aws.lambda.Function {

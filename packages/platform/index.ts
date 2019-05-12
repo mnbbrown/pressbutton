@@ -9,7 +9,7 @@ import { frontendClient, pool } from "./src/infrastructure/cognito";
 import { createLambda } from "./src/infrastructure/lambdas";
 import { createRoute } from "./src/infrastructure/api";
 import { routes } from "./src/routes/api";
-import { toLambdaPath } from "./src/engine/adapters/lambda";
+import { toLambdaPath } from "@pressbutton/engine/adapters/lambda";
 
 const apiRoutes = routes.map(route => {
   const lambda = createLambda(route.name, "src/handlers/api.handler", {

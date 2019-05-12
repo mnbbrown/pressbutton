@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import { api } from "./src/routes/api";
-import { toExpress } from "./src/engine/adapters/express";
+import { toExpress } from "@pressbutton/engine/adapters/express";
 import dotenv from "dotenv";
 
 dotenv.config();

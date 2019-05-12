@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@pressbutton/engine/*": ["./engine/src/*"],
+      "@pressbutton/engine": ["./engine/src"]
+    }
+  }
+}

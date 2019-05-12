@@ -1,5 +1,5 @@
-import { API } from "../engine";
-import { Middleware } from "../engine/types";
+import { API } from "@pressbutton/engine";
+import { Middleware } from "@pressbutton/engine/types";
 import { HttpError } from "../utils/http";
 import { Container } from "inversify";
 import {

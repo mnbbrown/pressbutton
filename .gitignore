@@ -16,3 +16,4 @@ backend/latency.png
 
 ./packages/platform/dist/*.js
 packages/platform/dist/handler.js
+packages/engine/dist/**

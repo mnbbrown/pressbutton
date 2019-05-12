@@ -1,14 +1,12 @@
 {
   "extends": "../tsconfig.paths.json",
   "compilerOptions": {
-    "outDir": "bin",
+    "outDir": "dist",
     "target": "es6",
     "lib": [
       "es6"
     ],
-    "types": ["reflect-metadata"],
     "module": "commonjs",
-    "allowJs": true,
     "moduleResolution": "node",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
@@ -23,8 +21,5 @@
     "forceConsistentCasingInFileNames": true,
     "strictNullChecks": true
   },
-  "files": [
-    "index.ts",
-    "local.ts"
-  ]
+  "include": ["./src/**/*"]
 }

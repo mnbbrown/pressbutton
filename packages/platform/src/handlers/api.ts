@@ -1,6 +1,6 @@
 import { Context, APIGatewayEvent, APIGatewayProxyResult } from "aws-lambda";
 import { routes } from "../routes/api";
-import { toLambdaHandler } from "../engine/adapters/lambda";
+import { toLambdaHandler } from "@pressbutton/engine/adapters/lambda";
 
 export const handler = async (
   event: APIGatewayEvent,
